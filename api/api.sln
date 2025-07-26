@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "redington.calculation", "re
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "redington.calculation.test", "redington.calculation.test\redington.calculation.test.csproj", "{4F69EE84-375E-467E-8423-8E60CCBBD4EA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "redington.calculation.api", "redington.calculation.api\redington.calculation.api.csproj", "{D362C90A-0264-4D46-9A7F-695EFD016C07}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,18 @@ Global
 		{4F69EE84-375E-467E-8423-8E60CCBBD4EA}.Release|x64.Build.0 = Release|Any CPU
 		{4F69EE84-375E-467E-8423-8E60CCBBD4EA}.Release|x86.ActiveCfg = Release|Any CPU
 		{4F69EE84-375E-467E-8423-8E60CCBBD4EA}.Release|x86.Build.0 = Release|Any CPU
+		{D362C90A-0264-4D46-9A7F-695EFD016C07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D362C90A-0264-4D46-9A7F-695EFD016C07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D362C90A-0264-4D46-9A7F-695EFD016C07}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D362C90A-0264-4D46-9A7F-695EFD016C07}.Debug|x64.Build.0 = Debug|Any CPU
+		{D362C90A-0264-4D46-9A7F-695EFD016C07}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D362C90A-0264-4D46-9A7F-695EFD016C07}.Debug|x86.Build.0 = Debug|Any CPU
+		{D362C90A-0264-4D46-9A7F-695EFD016C07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D362C90A-0264-4D46-9A7F-695EFD016C07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D362C90A-0264-4D46-9A7F-695EFD016C07}.Release|x64.ActiveCfg = Release|Any CPU
+		{D362C90A-0264-4D46-9A7F-695EFD016C07}.Release|x64.Build.0 = Release|Any CPU
+		{D362C90A-0264-4D46-9A7F-695EFD016C07}.Release|x86.ActiveCfg = Release|Any CPU
+		{D362C90A-0264-4D46-9A7F-695EFD016C07}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
