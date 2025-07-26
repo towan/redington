@@ -30,10 +30,10 @@ public class EitherTests
 
     [Theory]
     [InlineData(0.5, 0.5, null)]
-    [InlineData(1.1, 0.5, "A pa value greater than 1.0 is invalid")]
-    [InlineData(0.5, 1.1, "A pb value greater than 1.0 is invalid")]
-    [InlineData(-0.1, 0.5, "A pa value less than 0 is invalid")]
-    [InlineData(0.5, -0.1, "A pb value less than 0 is invalid")]
+    [InlineData(1.1, 0.5, "The value of pa must be between 0.0 and 1.0 inclusive.")]
+    [InlineData(0.5, 1.1, "The value of pb must be between 0.0 and 1.0 inclusive.")]
+    [InlineData(-0.1, 0.5, "The value of pa must be between 0.0 and 1.0 inclusive.")]
+    [InlineData(0.5, -0.1, "The value of pb must be between 0.0 and 1.0 inclusive.")]
     public void CheckValidationFailureMessages(double pa, double pb, string? expected)
     {
         var result = ProbabilityCalculator.CombinedWith(pa, pb);

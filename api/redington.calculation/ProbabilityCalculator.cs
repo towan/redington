@@ -1,6 +1,4 @@
-﻿
-
-namespace redington.calculation;
+﻿namespace redington.calculation;
 
 public static class ProbabilityCalculator
 {
@@ -17,26 +15,37 @@ public static class ProbabilityCalculator
     /// </returns>
     public static CalculationResult CombinedWith(double pa, double pb)
     {
-        return (pa, pb) switch
-        {
-            var (a, b) when a > ProbabilityMax => new CalculationResult(null, false, "A pa value greater than 1.0 is invalid"),
-            var (a, b) when b > ProbabilityMax => new CalculationResult(null, false, "A pb value greater than 1.0 is invalid"),
-            var (a, b) when a < ProbabilityMin => new CalculationResult(null, false, "A pa value less than 0 is invalid"),
-            var (a, b) when b < ProbabilityMin => new CalculationResult(null, false, "A pb value less than 0 is invalid"),
-            _ => new CalculationResult((pa * pb), true, null)
-        };
+        var validationResult = ValidateParameters(pa, pb);
+        if (validationResult != null)
+            return validationResult;
+
+        return new CalculationResult(pa * pb, true, null);
     }
 
+    /// <summary>
+    /// Calculates the probability of either of two independent events occurring.
+    /// </summary>
+    /// <param name="pa">The probability of event A (must be between 0.0 and 1.0).</param>
+    /// <param name="pb">The probability of event B (must be between 0.0 and 1.0).</param>
+    /// <returns>
+    /// A <see cref="CalculationResult"/> containing the probability of either event occurring if both inputs are valid; otherwise, a result indicating failure.
+    /// </returns>
     public static CalculationResult Either(double pa, double pb)
     {
-        return (pa, pb) switch
-        {
-            var (a, b) when a > ProbabilityMax => new CalculationResult(null, false, "A pa value greater than 1.0 is invalid"),
-            var (a, b) when b > ProbabilityMax => new CalculationResult(null, false, "A pb value greater than 1.0 is invalid"),
-            var (a, b) when a < ProbabilityMin => new CalculationResult(null, false, "A pa value less than 0 is invalid"),
-            var (a, b) when b < ProbabilityMin => new CalculationResult(null, false, "A pb value less than 0 is invalid"),
-            _ => new CalculationResult(((pa + pb) - (pa * pb)), true, null)
-        };
+        var validationResult = ValidateParameters(pa, pb);
+        if (validationResult != null)
+            return validationResult;
+
+        return new CalculationResult(((pa + pb) - (pa * pb)), true, null);
+    }
+
+    private static CalculationResult? ValidateParameters(double pa, double pb)
+    {
+        if (pa < ProbabilityMin || pa > ProbabilityMax)
+            return new CalculationResult(null, false, "The value of pa must be between 0.0 and 1.0 inclusive.");
+        if (pb < ProbabilityMin || pb > ProbabilityMax)
+            return new CalculationResult(null, false, "The value of pb must be between 0.0 and 1.0 inclusive.");
+        return null;
     }
 }
 
