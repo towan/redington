@@ -2,7 +2,7 @@
 
 namespace redington.calculation.test;
 
-public class ProbabilityCalculatorTests
+public class CombinedWithTests
 {
     //CombinedWith: P(A)P(B) e.g. 0.5 * 0.5 = 0.25
     [Fact]
@@ -13,7 +13,6 @@ public class ProbabilityCalculatorTests
         result.Success.Should().BeTrue();
         result.Result.Should().Be(0.25);
     }
-
 
     //The user should be able to enter two valid probabilities (0 to 1 e.g. 0.5 is valid, while 1.1 or -0.1 is not).
     [Theory]
@@ -34,16 +33,11 @@ public class ProbabilityCalculatorTests
     [InlineData(0.5, 0.5, null)]
     [InlineData(1.1, 0.5, "A pa value greater than 1.0 is invalid")]
     [InlineData(0.5, 1.1, "A pb value greater than 1.0 is invalid")]
-    [InlineData(-0.1, 0.5,  "A pa value less than 0 is invalid")]
+    [InlineData(-0.1, 0.5, "A pa value less than 0 is invalid")]
     [InlineData(0.5, -0.1, "A pb value less than 0 is invalid")]
-    //[InlineData(-0.1, -0.1, false)]
-    //[InlineData(1.1, 1.1, false)]
-
     public void CheckValidationFailureMessages(double pa, double pb, string? expected)
     {
         var result = ProbabilityCalculator.CombinedWith(pa, pb);
         result.ValidationFailureMessage.Should().Be(expected);
     }
-
-
 }

@@ -1,4 +1,5 @@
 ﻿
+
 namespace redington.calculation;
 
 public static class ProbabilityCalculator
@@ -26,5 +27,16 @@ public static class ProbabilityCalculator
         };
     }
 
+    public static CalculationResult Either(double pa, double pb)
+    {
+        return (pa, pb) switch
+        {
+            var (a, b) when a > ProbabilityMax => new CalculationResult(null, false, "A pa value greater than 1.0 is invalid"),
+            var (a, b) when b > ProbabilityMax => new CalculationResult(null, false, "A pb value greater than 1.0 is invalid"),
+            var (a, b) when a < ProbabilityMin => new CalculationResult(null, false, "A pa value less than 0 is invalid"),
+            var (a, b) when b < ProbabilityMin => new CalculationResult(null, false, "A pb value less than 0 is invalid"),
+            _ => new CalculationResult(((pa + pb) - (pa * pb)), true, null)
+        };
+    }
 }
 
