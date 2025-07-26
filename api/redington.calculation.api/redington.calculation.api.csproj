@@ -13,5 +13,9 @@
   <ItemGroup>
     <ProjectReference Include="..\redington.calculation\redington.calculation.csproj" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <InternalsVisibleTo Include="redington.calculation.api.test" />
+  </ItemGroup>
 
 </Project>

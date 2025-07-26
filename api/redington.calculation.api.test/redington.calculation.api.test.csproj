@@ -19,4 +19,8 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\redington.calculation.api\redington.calculation.api.csproj" />
+  </ItemGroup>
+
 </Project>
