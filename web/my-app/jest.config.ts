@@ -162,7 +162,8 @@ const config: Config.InitialOptions = {
   //    "**/?(*.)+(spec|test).?([mc])[jt]s?(x)"
   //  ],
   testMatch: ["**/?(*.)+(test).[jt]s?(x)"],
-  testEnvironment: "jest-environment-jsdom",
+   preset: 'ts-jest',
+  testEnvironment: "jsdom",
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
   // testPathIgnorePatterns: [
   //   "/node_modules/"

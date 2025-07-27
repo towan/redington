@@ -1,3 +1,4 @@
+// CalculateProbability.tsx - Refactored Component
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -17,7 +18,6 @@ type ApiResponse = {
   validationFailureMessage: string | null;
 };
 
-// Add 'operation' to schema
 const schema = yup.object().shape({
   value1: yup
     .number()
@@ -72,42 +72,72 @@ const CalculateProbability: React.FC = () => {
 
   return (
     <div className="max-w-md mx-auto p-4 border rounded shadow mt-6">
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <div>
-          <label className="block font-medium mb-1">Choose calculation:</label>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" role="form" aria-label="Calculate Probability">
+        <fieldset>
+          <legend className="block font-medium mb-1">Choose calculation:</legend>
           <div className="flex gap-4">
             <label className="flex items-center gap-1">
-              <input type="radio" value="Either" {...register('operation')} />
+              <input 
+                type="radio" 
+                value="Either" 
+                {...register('operation')}
+                aria-describedby={errors.operation ? 'operation-error' : undefined}
+              />
               Either
             </label>
             <label className="flex items-center gap-1">
-              <input type="radio" value="CombinedWith" {...register('operation')} />
+              <input 
+                type="radio" 
+                value="CombinedWith" 
+                {...register('operation')}
+                aria-describedby={errors.operation ? 'operation-error' : undefined}
+              />
               CombinedWith
             </label>
           </div>
-          {errors.operation && <p className="text-red-500 text-sm">{errors.operation.message}</p>}
-        </div>
+          {errors.operation && (
+            <p className="text-red-500 text-sm" id="operation-error" role="alert">
+              {errors.operation.message}
+            </p>
+          )}
+        </fieldset>
 
         <div>
-          <label className="block font-medium">Value 1 (0–1):</label>
+          <label className="block font-medium" htmlFor="value1">
+            Value 1 (0–1):
+          </label>
           <input
+            id="value1"
             type="number"
             step="0.01"
             {...register('value1')}
             className="w-full border px-2 py-1 rounded"
+            aria-describedby={errors.value1 ? 'value1-error' : undefined}
           />
-          {errors.value1 && <p className="text-red-500 text-sm">{errors.value1.message}</p>}
+          {errors.value1 && (
+            <p className="text-red-500 text-sm" id="value1-error" role="alert">
+              {errors.value1.message}
+            </p>
+          )}
         </div>
 
         <div>
-          <label className="block font-medium">Value 2 (0–1):</label>
+          <label className="block font-medium" htmlFor="value2">
+            Value 2 (0–1):
+          </label>
           <input
+            id="value2"
             type="number"
             step="0.01"
             {...register('value2')}
             className="w-full border px-2 py-1 rounded"
+            aria-describedby={errors.value2 ? 'value2-error' : undefined}
           />
-          {errors.value2 && <p className="text-red-500 text-sm">{errors.value2.message}</p>}
+          {errors.value2 && (
+            <p className="text-red-500 text-sm" id="value2-error" role="alert">
+              {errors.value2.message}
+            </p>
+          )}
         </div>
 
         <button
@@ -116,40 +146,47 @@ const CalculateProbability: React.FC = () => {
           className={`w-full px-4 py-2 rounded text-white ${
             !isValid || isSubmitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600'
           }`}
+          aria-describedby="submit-status"
         >
           {isSubmitting ? 'Submitting...' : 'Submit'}
         </button>
       </form>
-      <AnimatePresence>
-  {response && (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -10 }}
-      className={`mt-4 p-3 border rounded ${
-        response.success ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
-      }`}
-    >
-      {response.success ? (
-        <p><strong>Result:</strong> {response.result}</p>
-      ) : (
-        <p><strong>Validation failed:</strong> {response.validationFailureMessage || 'Unknown error'}</p>
-      )}
-    </motion.div>
-  )}
 
-  {error && (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -10 }}
-      className="mt-4 p-3 border rounded bg-red-100 text-red-800"
-    >
-      <p><strong>Error:</strong> {error}</p>
-    </motion.div>
-  )}
-</AnimatePresence>
+      <div id="submit-status" aria-live="polite" aria-atomic="true">
+        <AnimatePresence>
+          {response && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className={`mt-4 p-3 border rounded ${
+                response.success ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+              }`}
+              role="status"
+              aria-label={response.success ? 'Calculation result' : 'Validation error'}
+            >
+              {response.success ? (
+                <p><strong>Result:</strong> {response.result}</p>
+              ) : (
+                <p><strong>Validation failed:</strong> {response.validationFailureMessage || 'Unknown error'}</p>
+              )}
+            </motion.div>
+          )}
 
+          {error && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="mt-4 p-3 border rounded bg-red-100 text-red-800"
+              role="alert"
+              aria-label="Request error"
+            >
+              <p><strong>Error:</strong> {error}</p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   );
 };
