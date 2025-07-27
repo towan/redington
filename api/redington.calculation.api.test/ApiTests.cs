@@ -31,7 +31,7 @@ public class ApiTests
         });
 
     }
-    
+
     [Fact]
     public async Task EitherEndpointReturnsOkStatus()
     {
@@ -56,6 +56,7 @@ public class ApiTests
             _.StatusCodeShouldBe(HttpStatusCode.BadRequest);
             _.ContentShouldContain("The value of pa must be between 0.0 and 1.0 inclusive.");
         });
- 
     }
+    
+    
 }

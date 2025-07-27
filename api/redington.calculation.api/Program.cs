@@ -1,7 +1,18 @@
 using System.Security.Cryptography;
-using redington.calculation;
+using static redington.calculation.ProbabilityCalculator;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddSerilog(l =>
+{
+    l.WriteTo.File(
+        path: "api-.log",
+        rollingInterval: RollingInterval.Day,
+        retainedFileCountLimit: 30,
+        outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj} {Properties:j}{NewLine}{Exception}"
+    );
+});
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -17,30 +28,35 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/CombinedWith", (double probabilityA, double probabilityB) =>
+app.MapGet("/CombinedWith", static (ILogger<Program> logger, double probabilityA, double probabilityB) =>
 {
-    var result = ProbabilityCalculator.CombinedWith(probabilityA, probabilityB);
+    var result = CombinedWith(probabilityA, probabilityB);
 
     if (!result.Success)
     {
-        return Results.BadRequest(result.ValidationFailureMessage);    
+        logger.LogInformation($"CombinedWith request failed. A {probabilityA}, B {probabilityB}. Reason: {result.ValidationFailureMessage}");
+        return Results.BadRequest(result.ValidationFailureMessage);
     }
+
+    logger.LogInformation($"CombinedWith request successfully handled. A {probabilityA}, B {probabilityB}, Result {result.Result}");
 
     return Results.Ok(result);
 });
 
-app.MapGet("/Either", (double probabilityA, double probabilityB) =>
+
+app.MapGet("/Either", (ILogger<Program> logger,double probabilityA, double probabilityB) =>
 {
-    var result = ProbabilityCalculator.Either(probabilityA, probabilityB);
+    var result = Either(probabilityA, probabilityB);
 
     if (!result.Success)
     {
-        return Results.BadRequest(result.ValidationFailureMessage);    
+        logger.LogInformation($"Either request failed. A {probabilityA}, B {probabilityB}. Reason: {result.ValidationFailureMessage}");
+        return Results.BadRequest(result.ValidationFailureMessage);
     }
+
+    logger.LogInformation($"Either request successfully handled. A {probabilityA}, B {probabilityB}, Result {result.Result}");
 
     return Results.Ok(result);
 });
+
 app.Run();
-
-
-
