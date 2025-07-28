@@ -1,0 +1,19 @@
+1. Create the calculation functions. These are the core value of this project, in a real world scenario addressing
+    these first may help de-risk the project by discovering any fundamental issues as early as possible.
+2. Host the calculation functions in an Http API with appropriate tests, in this case using the Alba library for concise,
+    readable tests. Logging to a local text file using the Serilog library.
+3. Web UI with single React component, unit tests using Jest & testing-library/react, the component will perform input validation
+    to avoid sending invalid data to the api.
+
+misc : uri's and log file locations are hard-coded, in production code we would expect to use configuration files or environment
+    variables.
+
+included is a bash script 'build-test.sh' to build,test & then start the api & web applications for manual testing.
+
+Alternately, for manual testing, the api can be tested by running 'dotnet test' from the /api directory & started by running 'dotnet run' from the 
+/api/redington.calculation.api directory. The web app can be run by running 'npm i' & 'npm start' from the /web/my-app directory.
+(note this is tested running on macos with bash shell)
+
+
+
+
