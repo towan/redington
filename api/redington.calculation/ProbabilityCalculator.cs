@@ -15,9 +15,9 @@ public static class ProbabilityCalculator
     /// </returns>
     public static CalculationResult CombinedWith(double pa, double pb)
     {
-        var validationResult = ValidateParameters(pa, pb);
-        if (validationResult != null)
-            return validationResult;
+        var (isValid,message) = ValidateParameters(pa, pb);
+        if (!isValid)
+            return new CalculationResult(null,false,message);
 
         return new CalculationResult(pa * pb, true, null);
     }
@@ -32,19 +32,19 @@ public static class ProbabilityCalculator
     /// </returns>
     public static CalculationResult Either(double pa, double pb)
     {
-        var validationResult = ValidateParameters(pa, pb);
-        if (validationResult != null)
-            return validationResult;
+        var (isValid,message) = ValidateParameters(pa, pb);
+        if (!isValid)
+            return new CalculationResult(null,false,message);
 
         return new CalculationResult(((pa + pb) - (pa * pb)), true, null);
     }
 
-    private static CalculationResult? ValidateParameters(double pa, double pb)
+    private static (bool,string) ValidateParameters(double pa, double pb)
     {
         if (pa < ProbabilityMin || pa > ProbabilityMax)
-            return new CalculationResult(null, false, "The value of pa must be between 0.0 and 1.0 inclusive.");
+            return (false, "The value of pa must be between 0.0 and 1.0 inclusive.");
         if (pb < ProbabilityMin || pb > ProbabilityMax)
-            return new CalculationResult(null, false, "The value of pb must be between 0.0 and 1.0 inclusive.");
+            return (false, "The value of pb must be between 0.0 and 1.0 inclusive.");
         return null;
     }
 }
